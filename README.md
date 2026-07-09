@@ -1,5 +1,7 @@
 # 🛰️ Sentinel — Open-Source Intelligence (OSINT) Dashboard
 
+**🔗 Live demo:** [sentinel-global-situational-awareness.streamlit.app](https://sentinel-global-situational-awareness-bclf3l9hpj2iwqctcd9f5t.streamlit.app/)
+
 Sentinel is a real-time situational-awareness dashboard inspired by intelligence
 analysis platforms like Palantir Gotham — built entirely on **free, public data
 sources**. It pulls open-source news event data, maps it geographically, scores
@@ -67,7 +69,6 @@ spiking, and visualizes relationships between countries using a network graph.
 
 ## Setup & Run
 
-```bash
 git clone <your-repo-url>
 cd sentinel
 
@@ -77,7 +78,7 @@ source venv/bin/activate   # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 
 streamlit run app.py
-```
+
 
 The app opens at `http://localhost:8501`. Click **🔄 Refresh live feed** in the
 sidebar any time to force a fresh pull instead of waiting for the 5-minute
@@ -85,7 +86,6 @@ cache to expire.
 
 ## Project Structure
 
-```
 sentinel/
 ├── app.py               # Main Streamlit dashboard
 ├── data_source.py        # GDELT event fetching + risk score computation + fallback data
@@ -93,7 +93,7 @@ sentinel/
 ├── trend_analysis.py     # Coverage-volume timeline, linear trend + anomaly detection
 ├── requirements.txt
 └── README.md
-```
+
 
 ## Possible Extensions
 
