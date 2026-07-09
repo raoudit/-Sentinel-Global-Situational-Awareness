@@ -17,9 +17,9 @@ from data_source import fetch_events, compute_risk_scores, EVENT_TYPES
 from entity_graph import build_entity_graph, graph_to_plotly_elements
 from trend_analysis import fetch_volume_timeline, analyze
 
-# ---------------------------------------------------------------------------
+
 # PAGE CONFIG + THEME
-# ---------------------------------------------------------------------------
+
 st.set_page_config(
     page_title="SENTINEL // OSINT Dashboard",
     page_icon="🛰️",
@@ -50,9 +50,9 @@ DARK_CSS = """
 """
 st.markdown(DARK_CSS, unsafe_allow_html=True)
 
-# ---------------------------------------------------------------------------
+
 # SIDEBAR CONTROLS
-# ---------------------------------------------------------------------------
+
 st.sidebar.markdown("## 🛰️ SENTINEL CONTROL")
 st.sidebar.markdown("---")
 
@@ -74,15 +74,13 @@ st.sidebar.markdown(
     "**No private, classified, or restricted data is used.**"
 )
 
-# ---------------------------------------------------------------------------
-# DATA FETCH (cached so we don't hit the API on every widget interaction)
-# ---------------------------------------------------------------------------
+
+# DATA FETCH 
 @st.cache_data(ttl=300, show_spinner=False)
 def load_data(q, n):
     return fetch_events(query=q, max_records=n)
 
-# The refresh button needs to actually invalidate the cache, otherwise it just
-# reruns the script and Streamlit hands back the same cached result.
+
 if refresh:
     load_data.clear()
 
@@ -93,9 +91,9 @@ st.caption(f"Last pulled: {datetime.utcnow().strftime('%H:%M:%S UTC')} · cache 
 
 risk_df = compute_risk_scores(df)
 
-# ---------------------------------------------------------------------------
+
 # HEADER
-# ---------------------------------------------------------------------------
+
 top_l, top_r = st.columns([3, 1])
 with top_l:
     st.markdown("# 🛰️ SENTINEL — Global Situational Awareness")
@@ -109,9 +107,9 @@ with top_r:
 
 st.markdown("---")
 
-# ---------------------------------------------------------------------------
+
 # TOP METRICS ROW
-# ---------------------------------------------------------------------------
+
 m1, m2, m3, m4 = st.columns(4)
 with m1:
     st.markdown(f"<div class='metric-box'><div class='metric-value'>{len(df)}</div>"
@@ -130,9 +128,9 @@ with m4:
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# ---------------------------------------------------------------------------
+
 # MAP + RISK CHART
-# ---------------------------------------------------------------------------
+
 map_col, risk_col = st.columns([2, 1])
 
 with map_col:
@@ -173,9 +171,9 @@ with risk_col:
 
 st.markdown("---")
 
-# ---------------------------------------------------------------------------
+
 # COVERAGE TREND & ANOMALY DETECTION (new capability)
-# ---------------------------------------------------------------------------
+
 st.markdown("### 📈 Coverage Trend & Anomaly Detection")
 st.caption(
     "Daily volume of matching coverage over the last 14 days, with a short linear "
@@ -234,9 +232,6 @@ with banner_col:
 
 st.markdown("---")
 
-# ---------------------------------------------------------------------------
-# ENTITY GRAPH + LIVE FEED
-# ---------------------------------------------------------------------------
 graph_col, feed_col = st.columns([2, 1])
 
 with graph_col:
@@ -276,9 +271,8 @@ with feed_col:
 
 st.markdown("---")
 
-# ---------------------------------------------------------------------------
-# EXPORT INTELLIGENCE BRIEF (new capability)
-# ---------------------------------------------------------------------------
+
+# EXPORT INTELLIGENCE BRIEF
 top5 = "\n".join(
     f"{i+1}. {row['country']} — risk {row['risk_score_normalized']:.1f}/100"
     for i, (_, row) in enumerate(risk_df.head(5).iterrows())
@@ -305,9 +299,8 @@ st.download_button("⬇ Export Intelligence Brief (.txt)", brief, file_name="sen
 
 st.markdown("---")
 
-# ---------------------------------------------------------------------------
+
 # RAW DATA TABLE (expandable)
-# ---------------------------------------------------------------------------
 with st.expander("📋 View raw event data table"):
     st.dataframe(
         df[["country", "event_type", "headline", "severity", "source"]],
